@@ -4,7 +4,8 @@ import config
 from flask import Flask, request
 import logging
 
-print("172.17.32.42 ")
+print(os.environ.get('IP'))
+print(os.environ.get('URL'))
 
 bot = telebot.TeleBot(config.token)
 
@@ -32,7 +33,7 @@ if "HEROKU" in list(os.environ.keys()):
     def webhook():
         bot.remove_webhook()
         bot.set_webhook(url="https://officetimetable.herokuapp.com/")
-    server.run(host=os.environ.get('IP'), port=os.environ.get('PORT', 80))
+    server.run(host=os.environ.get('URL'), port=os.environ.get('PORT', 80))
 else:
     bot.remove_webhook()
     bot.polling(none_stop=True)
