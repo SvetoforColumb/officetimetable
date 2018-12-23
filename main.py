@@ -8,9 +8,12 @@ import telebot
 bot = telebot.TeleBot(config.token)
 server = Flask(__name__)
 
+print("https://officetimetable.herokuapp.com/")
+
 
 @bot.message_handler(commands=['start'])
 def start(message):
+    bot.send_message(message.chat.id, 'HIII')
     bot.reply_to(message, 'Hello, ' + message.from_user.first_name)
 
 
@@ -32,5 +35,4 @@ def webhook():
     return "!", 200
 
 
-if __name__ == "__main__":
-    server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
+server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
