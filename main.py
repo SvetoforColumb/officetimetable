@@ -32,7 +32,7 @@ if "HEROKU" in list(os.environ.keys()):
     def webhook():
         bot.remove_webhook()
         bot.set_webhook(url="https://officetimetable.herokuapp.com/")
-    server.run(host="172.17.32.42", port=os.environ.get('PORT', 80))
+    server.run(host="0.0.0.0", port=os.environ.get('PORT', 80))
 else:
     bot.remove_webhook()
     bot.polling(none_stop=True)
