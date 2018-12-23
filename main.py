@@ -15,7 +15,7 @@ bot = telebot.TeleBot(config.token)
 def handle_start_help(message):
     # dbworker.addUser(message.chat.id)
     # now = datetime.datetime.now()
-    bot.send_message(message.chat.id, "Hi! This is your time keeper bsot!")
+    bot.send_message(message.chat.id, "Hi! This is your time keeper bot!")
 
 
 # Проверим, есть ли переменная окружения Хероку (как ее добавить смотрите ниже)
