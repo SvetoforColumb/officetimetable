@@ -8,7 +8,8 @@ import telebot
 bot = telebot.TeleBot(config.token)
 server = Flask(__name__)
 
-print("https://officetimetable.herokuapp.com/")
+print(os.environ.get('URL'))
+print(str(os.environ.get('URL')))
 
 
 @bot.message_handler(commands=['start'])
