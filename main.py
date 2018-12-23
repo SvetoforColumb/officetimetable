@@ -32,7 +32,7 @@ def getMessage():
 @server.route("/")
 def webhook():
     bot.remove_webhook()
-    bot.set_webhook(url='officetimetable.herokuapp.com/' + config.token)
+    bot.set_webhook(url='https://officetimetable.herokuapp.com/' + config.token)
     return "!", 200
 
 
