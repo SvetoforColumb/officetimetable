@@ -11,9 +11,9 @@ import telebot
 
 from multiprocessing import Process
 
-# import config
-# import dbworker
-# from telegramcalendar import create_calendar
+import config
+import dbworker
+from telegramcalendar import create_calendar
 
 logging.basicConfig(filename="/home/user/scripts/main.log", level=logging.ERROR)
 
@@ -39,11 +39,6 @@ markup_main.row('Акции')
 markup_main.row('Оставить отзыв')
 markup_remove = telebot.types.ReplyKeyboardRemove()
 
-
-
-SCOPES = 'https://www.googleapis.com/auth/calendar'
-CLIENT_SECRET_FILE = '/home/user/scripts/main/client_secret.json'
-APPLICATION_NAME = 'Google Calendar API Python Quickstart'
 
 
 def f(s):
