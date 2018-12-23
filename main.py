@@ -11,9 +11,9 @@ import telebot
 
 from multiprocessing import Process
 
-import config
-import dbworker
-from telegramcalendar import create_calendar
+# import config
+# import dbworker
+# from telegramcalendar import create_calendar
 
 logging.basicConfig(filename="/home/user/scripts/main.log", level=logging.ERROR)
 
@@ -39,12 +39,7 @@ markup_main.row('Акции')
 markup_main.row('Оставить отзыв')
 markup_remove = telebot.types.ReplyKeyboardRemove()
 
-try:
-    import argparse
 
-    flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
-except ImportError:
-    flags = None
 
 SCOPES = 'https://www.googleapis.com/auth/calendar'
 CLIENT_SECRET_FILE = '/home/user/scripts/main/client_secret.json'
@@ -80,7 +75,7 @@ def handle_start_help(message):
     dbworker.addUser(message.chat.id)
     now = datetime.datetime.now()
     bot.send_message(message.chat.id,
-                     "Вас приветствует бот предварительной записи на автомойку по адресу Носовихинское ш. Стр 54."
+                     "Hi! This time keep bot!"
                      "", reply_markup=markup_main)
 
 
