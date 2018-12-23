@@ -1,40 +1,36 @@
-import telebot
 import os
-import config
-from flask import Flask, request
-import logging
 
-print(os.environ.get('IP'))
-print(os.environ.get('URL'))
+from flask import Flask, request
+
+import config
+import telebot
 
 bot = telebot.TeleBot(config.token)
-
-# Здесь пишем наши хэндлеры
+server = Flask(__name__)
 
 
 @bot.message_handler(commands=['start'])
-def handle_start_help(message):
-    # dbworker.addUser(message.chat.id)
-    # now = datetime.datetime.now()
-    bot.send_message(message.chat.id, "Hi! This is your time keeper bot!")
+def start(message):
+    bot.reply_to(message, 'Hello, ' + message.from_user.first_name)
 
 
-# Проверим, есть ли переменная окружения Хероку (как ее добавить смотрите ниже)
-if "HEROKU" in list(os.environ.keys()):
-    logger = telebot.logger
-    telebot.logger.setLevel(logging.INFO)
+@bot.message_handler(func=lambda message: True, content_types=['text'])
+def echo_message(message):
+    bot.reply_to(message, message.text)
 
-    server = Flask(__name__)
-    @server.route("/bot", methods=['POST'])
-    def getMessage():
-        bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
-        return "!", 200
-    @server.route("/")
-    def webhook():
-        bot.remove_webhook()
-        bot.set_webhook(url="https://officetimetable.herokuapp.com/bot")
-    print(os.environ.get('URL'))
-    server.run(host='0.0.0.0', port=os.environ.get('PORT', 80))
-else:
+
+@server.route('/' + config.token, methods=['POST'])
+def getMessage():
+    bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
+    return "!", 200
+
+
+@server.route("/")
+def webhook():
     bot.remove_webhook()
-    bot.polling(none_stop=True)
+    bot.set_webhook(url='https://your_heroku_project.com/' + config.token)
+    return "!", 200
+
+
+if __name__ == "__main__":
+    server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
