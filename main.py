@@ -22,10 +22,13 @@ def start(message):
 
 
 @bot.message_handler(func=lambda message: "Make a note" in message.text)
-def handle(message):
+def make(message):
     bot.send_message(message.chat.id, "OK")
 
 
+@bot.message_handler(func=lambda message: "View notes" in message.text)
+def view(message):
+    bot.send_message(message.chat.id, "SEE")
 
 
 @server.route('/' + config.token, methods=['POST'])
