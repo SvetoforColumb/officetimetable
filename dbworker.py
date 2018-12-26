@@ -47,13 +47,13 @@ def getLastNoteId(user_id):
     conn = sqlite3.connect(config.db_file)
     cursor = conn.cursor()
     cursor.execute("select last_note_id from USERS where tid=" + str(user_id))
-    result = str(cursor.fetchone())
+    result = cursor.fetchone()
     print(result)
     if not result:
         return "0"
     conn.commit()
     conn.close()
-    return result
+    return result[0]
 
 
 def addNote(user_id, text):
@@ -71,7 +71,7 @@ def setDate(user_id, value):
     conn = sqlite3.connect(config.db_file)
     cursor = conn.cursor()
     lni = getLastNoteId(user_id)
-    print(lni)
+    print('aa ' + lni[0])
     cursor.execute('update reminders set "remind_date"=' + str(value) + " where id=" + str(lni))
     conn.commit()
     conn.close()
