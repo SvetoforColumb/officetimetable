@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="44ab2903-fed4-4743-a5e0-cb916e41e876" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/12d1758a-46da-4459-b6db-c32233247e62.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/12d1758a-46da-4459-b6db-c32233247e62.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/database.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbworker.py" beforeDir="false" afterPath="$PROJECT_DIR$/dbworker.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/markups.py" beforeDir="false" afterPath="$PROJECT_DIR$/markups.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/telegramcalendar.py" beforeDir="false" afterPath="$PROJECT_DIR$/telegramcalendar.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -71,8 +65,8 @@
       <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2360">
-              <caret line="147" lean-forward="true" selection-start-line="147" selection-end-line="147" />
+            <state relative-caret-position="327">
+              <caret line="46" column="83" selection-start-line="46" selection-start-column="82" selection-end-line="46" selection-end-column="83" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -493,8 +487,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2360">
-          <caret line="147" lean-forward="true" selection-start-line="147" selection-end-line="147" />
+        <state relative-caret-position="327">
+          <caret line="46" column="83" selection-start-line="46" selection-start-column="82" selection-end-line="46" selection-end-column="83" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>

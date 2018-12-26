@@ -36,7 +36,7 @@ def start(message):
 
 @bot.message_handler(func=lambda message: "Make a note" in message.text)
 def make(message):
-    bot.send_message(message.chat.id, "Enter a text of note", markups.markup_remove)
+    bot.send_message(message.chat.id, "Enter a text of note", reply_markup=markups.markup_remove)
     dbworker.setState(message.chat.id, config.States.ENTER_TEXT.value)
 
 
