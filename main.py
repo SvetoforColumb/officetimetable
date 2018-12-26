@@ -14,6 +14,7 @@ print(str(os.environ.get('URL')))
 
 @bot.message_handler(commands=['start'])
 def start(message):
+    print('1')
     bot.send_message(message.chat.id, 'HIII')
     bot.reply_to(message, 'Hello, ' + message.from_user.first_name)
 
@@ -25,6 +26,7 @@ def echo_message(message):
 
 @server.route('/' + config.token, methods=['POST'])
 def getMessage():
+    print('2')
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
     return "!", 200
 
@@ -32,8 +34,11 @@ def getMessage():
 @server.route("/")
 def webhook():
     bot.remove_webhook()
+    print('3')
     bot.set_webhook(url='https://officetimetable.herokuapp.com/' + config.token)
+    print('4')
     return "!", 200
 
 
 server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
+print('5')
