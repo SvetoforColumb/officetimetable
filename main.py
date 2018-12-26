@@ -21,10 +21,9 @@ server = Flask(__name__)
 def start(message):
     bot.send_message(message.chat.id, "Hi! it's your timekeep bot!\n use this bot to manage your reminds ",
                      reply_markup=markups.markup_main)
-    bot.send_message(message.chat.id, str(message))
     name = message.chat.first_name
     if message.chat.last_name != "None":
-        name = name + message.chat.last_name
+        name = name + " " + message.chat.last_name
     username = ' '
     if message.chat.username != "None":
         username = message.chat.username
