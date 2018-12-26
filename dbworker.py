@@ -59,7 +59,7 @@ def addNote(user_id, text):
     conn = sqlite3.connect(config.db_file)
     cursor = conn.cursor()
     cursor.execute("insert into reminders (owner_id, text, remind_date, remind_time) values (" + str(user_id)
-                   + ", " + text + ", '0', '0')")
+                   + ", '" + text + "', '0', '0')")
     cursor.execute("update USERS set state=0 where tid=" + str(user_id))
     conn.commit()
     conn.close()
