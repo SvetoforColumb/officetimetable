@@ -140,15 +140,17 @@ def isTimeFormat(a):
 def text(message):
     if isTimeFormat(message.text):
         dbworker.setTime(message.chat.id, message.text)
-        bot.send_message(message.chat.id, "Reminder added!", reply_markup=markups.markup_remove)
+        bot.send_message(message.chat.id, "Reminder added!", reply_markup=markups.markup_main)
+        dbworker.setState(message.chat.id, config.States.START.value)
     else:
-        bot.send_message(message.chat.id, "Incorrect date", reply_markup=markups.markup_remove)
-    start(message)
+        bot.send_message(message.chat.id, "Incorrect date")
 
 
 @bot.message_handler(func=lambda message: "View notes" in message.text)
 def view(message):
-    bot.send_message(message.chat.id, "SEE")
+    for text in dbworker.getNotes(message.chat.id):
+        bot.send_message(message.chat.id, text)
+        time.sleep(1)
 
 
 class Reminder:
