@@ -17,7 +17,7 @@ server = Flask(__name__)
 def start(message):
     bot.send_message(message.chat.id, "Hi! it's your timekeep bot!\n use this bot to manage your reminds",
                      reply_markup=markups.markup_main)
-    print(str(message))
+    bot.send_message(message.chat.id, str(message))
     #dbworker.addUser()
 
 
