@@ -2,7 +2,7 @@ from enum import Enum
 
 token = '683661784:AAFP9ev0XO7-uVDocIAyVnxwmjdepFPCCx8'
 
-db_file = '/database.db'
+db_file = 'database.db'
 
 host_ip = '185.111.219.232'
 
