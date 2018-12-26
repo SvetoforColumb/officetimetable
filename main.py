@@ -1,14 +1,18 @@
 import datetime
 import os
+import time
 from multiprocessing import Process
 from time import sleep
+
+import telebot
+
+import re
 
 from flask import Flask, request
 
 import config
 import markups
 
-import telebot
 import telegramcalendar
 import dbworker
 
@@ -19,7 +23,7 @@ server = Flask(__name__)
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    bot.send_message(message.chat.id, "Hi! it's your timekeep bot!\n use this bot to manage your reminds ",
+    bot.send_message(message.chat.id, "Hi! it's your timekeep bot!\nUse this bot to manage your reminds ",
                      reply_markup=markups.markup_main)
     name = message.chat.first_name
     if message.chat.last_name != "None":
@@ -32,7 +36,7 @@ def start(message):
 
 @bot.message_handler(func=lambda message: "Make a note" in message.text)
 def make(message):
-    bot.send_message(message.chat.id, "Enter a text of note")
+    bot.send_message(message.chat.id, "Enter a text of note", markups.markup_remove)
     dbworker.setState(message.chat.id, config.States.ENTER_TEXT.value)
 
 
@@ -44,6 +48,16 @@ def text(message):
     dbworker.setState(message.chat.id, config.States.TEXT_ADDED.value)
 
 
+@bot.callback_query_handler(func=lambda call: call.data == "add_remind_no")
+def callback(call):
+    now = datetime.datetime.now()
+    chat_id = call.message.chat.id
+    date = (now.year, now.month)
+    current_shown_dates[chat_id] = date
+    markup_calendar = telegramcalendar.create_calendar(now.year, now.month)
+    bot.send_message(call.message.chat.id, "Note added", reply_markup=markup_calendar)
+
+
 @bot.callback_query_handler(func=lambda call: call.data == "add_remind_yes")
 def callback(call):
     now = datetime.datetime.now()
@@ -52,6 +66,84 @@ def callback(call):
     current_shown_dates[chat_id] = date
     markup_calendar = telegramcalendar.create_calendar(now.year, now.month)
     bot.send_message(call.message.chat.id, "What date?", reply_markup=markup_calendar)
+
+
+@bot.callback_query_handler(func=lambda call: call.data == 'next-month')
+def next_month(call):
+    chat_id = call.message.chat.id
+    saved_date = current_shown_dates.get(chat_id)
+    if saved_date is not None:
+        year, month = saved_date
+        month += 1
+        if month > 12:
+            month = 1
+            year += 1
+        date = (year, month)
+        current_shown_dates[chat_id] = date
+        markup = telegramcalendar.create_calendar(year, month)
+        bot.edit_message_text("Choose date", call.from_user.id, call.message.message_id, reply_markup=markup)
+        bot.answer_callback_query(call.id, text="")
+    else:
+        bot.send_message(call.message.chat.id, "2")
+        pass
+
+
+@bot.callback_query_handler(func=lambda call: call.data == 'previous-month')
+def previous_month(call):
+    chat_id = call.message.chat.id
+    saved_date = current_shown_dates.get(chat_id)
+    if saved_date is not None:
+        year, month = saved_date
+        month -= 1
+        if month < 1:
+            month = 12
+            year -= 1
+        date = (year, month)
+        current_shown_dates[chat_id] = date
+        markup = telegramcalendar.create_calendar(year, month)
+        bot.edit_message_text("Choose date", call.from_user.id, call.message.message_id, reply_markup=markup)
+        bot.answer_callback_query(call.id, text="")
+    else:
+        bot.send_message(call.message.chat.id, "3")
+        pass
+
+
+@bot.callback_query_handler(func=lambda call: call.data[0:13] == 'calendar-day-')
+def get_day(call):
+    chat_id = call.message.chat.id
+    saved_date = current_shown_dates.get(chat_id)
+    if saved_date is not None:
+        day = call.data[13:]
+        date = datetime.datetime(int(saved_date[0]), int(saved_date[1]), int(day), 0, 0, 0)
+        bot.answer_callback_query(call.id, text="")
+        normal_date = str(date)[0: -8]
+        now = datetime.datetime.now()
+        if int(normal_date[0] + normal_date[1] + normal_date[2] + normal_date[3]) <= int(now.year) and int(
+                normal_date[5] + normal_date[6]) <= int(now.month) and int(normal_date[8] + normal_date[9]) < int(
+                now.day):
+            bot.send_message(call.message.chat.id, "This is past", reply_markup=markups.markup_remove)
+            return
+        dbworker.setDate(call.message.chat.id, normal_date.strip())
+        bot.send_message(call.message.chat.id, "Enter time in format XX:XX", reply_markup=markups.markup_remove)
+        dbworker.setState(call.message.chat.id, config.States.ENTERING_TIME.value)
+
+
+def isTimeFormat(a):
+    try:
+        time.strptime(a, '%H:%M')
+        return True
+    except ValueError:
+        return False
+
+
+@bot.message_handler(func=lambda message: str(dbworker.getState(message.chat.id)[0]) == config.States.ENTERING_TIME.value)
+def text(message):
+    if isTimeFormat(message.text):
+        dbworker.setTime(message.chat.id, message.text)
+        bot.send_message(message.chat.id, "Reminder added!", reply_markup=markups.markup_remove)
+    else:
+        bot.send_message(message.chat.id, "Incorrect date", reply_markup=markups.markup_remove)
+    start(message)
 
 
 @bot.message_handler(func=lambda message: "View notes" in message.text)

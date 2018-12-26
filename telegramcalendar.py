@@ -11,34 +11,10 @@ def create_calendar(year, month):
     # First row - Month and Year
     row = []
     calendar_name = calendar.month_name[month]
-    if calendar_name == "January":
-        calendar_name = "Январь"
-    elif calendar_name == "February":
-        calendar_name = "Февраль"
-    elif calendar_name == "March":
-        calendar_name = "Март"
-    elif calendar_name == "April":
-        calendar_name = "Апрель"
-    elif calendar_name == "May":
-        calendar_name = "Май"
-    elif calendar_name == "June":
-        calendar_name = "Июнь"
-    elif calendar_name == "July":
-        calendar_name = "Июль"
-    elif calendar_name == "August":
-        calendar_name = "Август"
-    elif calendar_name == "September":
-        calendar_name = "Сентябрь"
-    elif calendar_name == "October":
-        calendar_name = "Октябрь"
-    elif calendar_name == "November":
-        calendar_name = "Ноябрь"
-    elif calendar_name == "December":
-        calendar_name = "Декабрь"
     row.append(types.InlineKeyboardButton(calendar_name + " " + str(year), callback_data="ignore"))
     markup.row(*row)
     # Second row - Week Days
-    week_days = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]
+    week_days = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
     row = []
     for day in week_days:
         row.append(types.InlineKeyboardButton(day, callback_data="ignore"))

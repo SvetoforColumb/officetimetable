@@ -12,3 +12,4 @@ class States(Enum):
     START = "0"
     ENTER_TEXT = '1'
     TEXT_ADDED = '2'
+    ENTERING_TIME = '3'

@@ -28,6 +28,28 @@ def getState(user_id):
     return result
 
 
+def setLastNode(user_id):
+    conn = sqlite3.connect(config.db_file)
+    cursor = conn.cursor()
+    cursor.execute("select count(*) from reminders where owner_id=" + str(user_id))
+    num = cursor.fetchall()[0]
+    cursor.execute("update USERS set last_note_id='" + str(num) + "' where tid=" + str(user_id))
+    conn.commit()
+    conn.close()
+
+
+def getLastNoteId(user_id):
+    conn = sqlite3.connect(config.db_file)
+    cursor = conn.cursor()
+    cursor.execute("select last_note_id from USERS where tid=" + str(user_id))
+    result = cursor.fetchone()
+    if not result:
+        return "0"
+    conn.commit()
+    conn.close()
+    return result
+
+
 def addNote(user_id, text):
     conn = sqlite3.connect(config.db_file)
     cursor = conn.cursor()
@@ -37,9 +59,27 @@ def addNote(user_id, text):
         cursor.execute("insert into reminders (owner_id, text) values (" + str(user_id)
                        + ", " + text + ")")
     cursor.execute("update USERS set state=0 where tid=" + str(user_id))
+    setLastNode(user_id)
     conn.commit()
     conn.close()
 
+
+def setDate(user_id, value):
+    conn = sqlite3.connect(config.db_file)
+    cursor = conn.cursor()
+    lni = getLastNoteId(user_id)
+    cursor.execute("update reminders set remind_date='" + str(value) + "' where id=" + str(lni))
+    conn.commit()
+    conn.close()
+
+
+def setTime(user_id, value):
+    conn = sqlite3.connect(config.db_file)
+    cursor = conn.cursor()
+    lni = getLastNoteId(user_id)
+    cursor.execute("update reminders set remind_time='" + str(value) + "' where id=" + str(lni))
+    conn.commit()
+    conn.close()
 
 
 def setState(user_id, value):

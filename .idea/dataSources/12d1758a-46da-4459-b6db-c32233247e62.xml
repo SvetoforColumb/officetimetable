@@ -90,7 +90,11 @@
       <Position>5</Position>
       <DataType>INTEGER|0s</DataType>
     </column>
-    <key id="28" parent="9">
+    <column id="28" parent="9" name="last_note_id">
+      <Position>6</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <key id="29" parent="9">
       <ColNames>tid</ColNames>
       <Primary>1</Primary>
     </key>

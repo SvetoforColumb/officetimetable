@@ -9,6 +9,6 @@ markup_main.row('Set a remind time')
 
 yes_no_markup = types.InlineKeyboardMarkup(row_width=2)
 yes_no_markup_row = [
-        types.InlineKeyboardButton('Нет', callback_data="add_remind_no"),
-        types.InlineKeyboardButton('Да', callback_data="add_remind_yes")]
+        types.InlineKeyboardButton('No', callback_data="add_remind_no"),
+        types.InlineKeyboardButton('Yes', callback_data="add_remind_yes")]
 yes_no_markup.row(*yes_no_markup_row)
