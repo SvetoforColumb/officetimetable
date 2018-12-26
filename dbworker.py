@@ -33,6 +33,7 @@ def setLastNode(user_id):
     cursor = conn.cursor()
     cursor.execute("select count(*) from reminders where owner_id=" + str(user_id))
     num = cursor.fetchall()[0]
+    print("ss^   " + str(num))
     conn.commit()
     conn.close()
     conn = sqlite3.connect(config.db_file)
@@ -46,7 +47,7 @@ def getLastNoteId(user_id):
     conn = sqlite3.connect(config.db_file)
     cursor = conn.cursor()
     cursor.execute("select last_note_id from USERS where tid=" + str(user_id))
-    result = int(cursor.fetchone()[0]) + 1
+    result = int(cursor.fetchone()[0][0]) + 1
     if not result:
         return "0"
     conn.commit()
