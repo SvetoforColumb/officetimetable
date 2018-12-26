@@ -8,7 +8,7 @@ import telebot
 from telebot import TeleBot
 import dbworker
 
-bot = TeleBot(config.token)
+bot = telebot.TeleBot(config.token)
 server = Flask(__name__)
 
 
