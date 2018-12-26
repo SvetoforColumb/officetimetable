@@ -7,7 +7,7 @@ import markups
 
 import telebot
 #from telebot import TeleBot
-#import dbworker
+import dbworker
 
 bot = telebot.TeleBot(config.token)
 server = Flask(__name__)
@@ -18,7 +18,13 @@ def start(message):
     bot.send_message(message.chat.id, "Hi! it's your timekeep bot!\n use this bot to manage your reminds ",
                      reply_markup=markups.markup_main)
     bot.send_message(message.chat.id, str(message))
-    #dbworker.addUser()
+    name = message.chat.first_name
+    if message.chat.last_name != "None":
+        name = name + message.chat.last_name
+    username = ' '
+    if message.chat.username != "None":
+        username = message.chat.username
+    dbworker.addUser(message.chat.id, name, username)
 
 
 @bot.message_handler(func=lambda message: "Make a note" in message.text)
