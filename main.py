@@ -5,11 +5,11 @@ from flask import Flask, request
 import config
 import markups
 
-# import telebot
-from telebot import TeleBot
-import dbworker
+import pyTelegramBotAPI
+#from telebot import TeleBot
+#import dbworker
 
-bot = telebot.TeleBot(config.token)
+bot = pyTelegramBotAPI.TeleBot(config.token)
 server = Flask(__name__)
 
 
