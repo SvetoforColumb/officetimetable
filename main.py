@@ -3,30 +3,31 @@ import os
 from flask import Flask, request
 
 import config
+import markups
 import telebot
+import dbworker
 
 bot = telebot.TeleBot(config.token)
 server = Flask(__name__)
 
-print(os.environ.get('URL'))
-print(str(os.environ.get('URL')))
-
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    print('1')
-    bot.send_message(message.chat.id, 'HIII')
-    bot.reply_to(message, 'Hello, ' + message.from_user.first_name)
+    bot.send_message(message.chat.id, "Hi! it's your timekeep bot!\n use this bot to manage your reminds",
+                     reply_markup=markups.markup_main)
+    print(str(message))
+    #dbworker.addUser()
 
 
-@bot.message_handler(func=lambda message: True, content_types=['text'])
-def echo_message(message):
-    bot.reply_to(message, message.text)
+@bot.message_handler(func=lambda message: "Make a note" in message.text)
+def handle(message):
+    bot.send_message(message.chat.id, "OK")
+
+
 
 
 @server.route('/' + config.token, methods=['POST'])
 def getMessage():
-    print('2')
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
     return "!", 200
 
@@ -34,11 +35,8 @@ def getMessage():
 @server.route("/")
 def webhook():
     bot.remove_webhook()
-    print('3')
     bot.set_webhook(url='https://officetimetable.herokuapp.com/' + config.token)
-    print('4')
     return "!", 200
 
 
 server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
-print('5')
