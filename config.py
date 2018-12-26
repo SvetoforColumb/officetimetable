@@ -10,3 +10,5 @@ host_ip = '185.111.219.232'
 class States(Enum):
 
     START = "0"
+    ENTER_TEXT = '1'
+    TEXT_ADDED = '2'
