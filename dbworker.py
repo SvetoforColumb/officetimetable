@@ -36,7 +36,7 @@ def setLastNode(user_id):
     conn.close()
     conn = sqlite3.connect(config.db_file)
     cursor = conn.cursor()
-    num = cursor.fetchall()[0]
+    num = cursor.fetchall()
     cursor.execute("update USERS set last_note_id='" + str(num) + "' where tid=" + str(user_id))
     conn.commit()
     conn.close()
