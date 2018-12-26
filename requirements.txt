@@ -1,5 +1,3 @@
-markups
-telebot
 flask
 backports.functools-lru-cache==1.5
 certifi==2018.11.29
