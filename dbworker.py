@@ -51,7 +51,7 @@ def getLastNoteId(user_id):
         return "0"
     conn.commit()
     conn.close()
-    return result
+    return result[0]
 
 
 def addNote(user_id, text):
