@@ -5,7 +5,6 @@ from flask import Flask, request
 import config
 import markups
 import telebot
-import dbworker
 
 bot = telebot.TeleBot(config.token)
 server = Flask(__name__)
