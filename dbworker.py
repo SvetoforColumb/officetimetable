@@ -46,7 +46,7 @@ def getLastNoteId(user_id):
     conn = sqlite3.connect(config.db_file)
     cursor = conn.cursor()
     cursor.execute("select last_note_id from USERS where tid=" + str(user_id))
-    result = cursor.fetchone()
+    result = int(cursor.fetchone()[0]) + 1
     if not result:
         return "0"
     conn.commit()
