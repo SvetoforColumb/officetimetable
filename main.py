@@ -189,9 +189,10 @@ class Reminder:
             now_time = str(now)[10:16]
             print(now_date)
             print(now_time)
-            list = dbworker.getReminds(now_date, now_time)
-            if list is not None:
-                for remind in list:
+            remind_list = dbworker.getReminds(now_date, now_time)
+            print(remind_list)
+            if remind_list is not None:
+                for remind in remind_list:
                     bot.send_message(remind[0], remind[1])
             time.sleep(60)
 
