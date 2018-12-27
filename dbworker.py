@@ -116,7 +116,7 @@ def addNote(user_id, text):
     cursor = conn.cursor()
     prev_id = getLastNotesId(user_id)
     cursor.execute("insert into reminders (owner_id, text, remind_date, remind_time, prev_remind) values ("
-                   + str(user_id) + ", '" + text + "', '0', '0', " + prev_id + ")")
+                   + str(user_id) + ", '" + text + "', '0', '0', '" + prev_id + "')")
     conn.commit()
     conn.close()
     setLastNode(user_id)
