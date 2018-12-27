@@ -128,7 +128,8 @@ def isTimeFormat(a):
         return False
 
 
-@bot.message_handler(func=lambda message: str(dbworker.getState(message.chat.id)[0]) == config.States.ENTERING_TIME.value)
+@bot.message_handler(
+    func=lambda message: str(dbworker.getState(message.chat.id)[0]) == config.States.ENTERING_TIME.value)
 def text(message):
     if isTimeFormat(message.text):
         dbworker.setTime(message.chat.id, message.text)
@@ -140,9 +141,34 @@ def text(message):
 
 @bot.message_handler(func=lambda message: "View notes" in message.text)
 def view(message):
-    for text in dbworker.getNotes(message.chat.id):
-        bot.send_message(message.chat.id, text)
-        time.sleep(1)
+    last_note_id = dbworker.getLastNoteId(message.chat.id)
+    note = dbworker.getNotesById(last_note_id)
+    bot.send_message(message.chat.id, note, reply_markup=markups.getNoteMarkup(message.chat.id))
+
+
+@bot.callback_query_handler(func=lambda call: call.data[0:10] == 'next_note-')
+def nextNode(call):
+    r_node_id = call.data[10:]
+    note = dbworker.getNotesById(r_node_id)
+    bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text=note)
+    bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id,
+                                  reply_markup=markups.getNoteMarkup(call.message.chat.id, r_node_id))
+
+
+@bot.callback_query_handler(func=lambda call: call.data[0:10] == 'prev_note-')
+def nextNode(call):
+    r_node_id = call.data[10:]
+    note = dbworker.getNotesById(r_node_id)
+    bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text=note)
+    bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id,
+                                  reply_markup=markups.getNoteMarkup(call.message.chat.id, r_node_id))
+
+
+@bot.callback_query_handler(func=lambda call: call.data[0:11] == 'delete_note-')
+def nextNode(call):
+    r_node_id = call.data[11:]
+    dbworker.deleteNote(r_node_id)
+    bot.send_message(call.message.chat.id, 'Note deleted')
 
 
 class Reminder:

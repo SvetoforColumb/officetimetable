@@ -1,5 +1,5 @@
 from telebot import types
-
+import dbworker
 
 def getRemoveMarkup():
         return types.ReplyKeyboardRemove()
@@ -9,7 +9,6 @@ def getMainMarkup():
         markup_main = types.ReplyKeyboardMarkup(True)
         markup_main.row('Make a note')
         markup_main.row('View notes')
-        markup_main.row('Set a remind time')
         return markup_main
 
 
@@ -22,11 +21,18 @@ def getYesNoMarkup():
         return yes_no_markup
 
 
-def getNoteMarkup():
+def getNoteMarkup(user_id, note_id=None):
+        if note_id:
+                prev_note_id = dbworker.getPrevNoteId(note_id)
+                next_note_id = dbworker.getNextNoteId(note_id)
+        else:
+                note_id = dbworker.getLastNoteId(user_id)
+                prev_note_id = dbworker.getPrevNoteId(note_id)
+                next_note_id = dbworker.getNextNoteId(note_id)
         note_markup = types.InlineKeyboardMarkup(row_width=2)
         note_markup_row = [
-                types.InlineKeyboardButton('<', callback_data="next"),
-                types.InlineKeyboardButton('Delete', callback_data=""),
-                types.InlineKeyboardButton('>', callback_data="add_remind_yes")]
+                types.InlineKeyboardButton('<', callback_data="prev_note-" + str(prev_note_id)),
+                types.InlineKeyboardButton('Delete', callback_data="delete_note-" + str(note_id)),
+                types.InlineKeyboardButton('>', callback_data="next_note-" + str(next_note_id))]
         note_markup.row(*note_markup_row)
         return note_markup

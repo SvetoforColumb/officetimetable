@@ -56,10 +56,22 @@ def getLastNoteId(user_id):
     return result
 
 
-def getNotes(user_id):
+def getLastNotesId(user_id):
     conn = sqlite3.connect(config.db_file)
     cursor = conn.cursor()
-    cursor.execute("select text from reminders where owner_id=" + str(user_id))
+    cursor.execute("select id from reminders where owner_id=" + str(user_id) + " order by id desc")
+    result = cursor.fetchall()
+    if not result:
+        return "0"
+    conn.commit()
+    conn.close()
+    return result[0]
+
+
+def getPrevNoteId(note_id):
+    conn = sqlite3.connect(config.db_file)
+    cursor = conn.cursor()
+    cursor.execute("select prev_remind from reminders where id=" + str(note_id))
     result = cursor.fetchall()
     if not result:
         return "0"
@@ -68,10 +80,30 @@ def getNotes(user_id):
     return result
 
 
-def getNotesid(user_id):
+def getNextNoteId(note_id):
     conn = sqlite3.connect(config.db_file)
     cursor = conn.cursor()
-    cursor.execute("select id from reminders where owner_id=" + str(user_id))
+    cursor.execute("select prev_remind from reminders where id=" + str(note_id))
+    result = cursor.fetchall()
+    if not result:
+        return "0"
+    conn.commit()
+    conn.close()
+    return result
+
+
+def deleteNote(note_id):
+    conn = sqlite3.connect(config.db_file)
+    cursor = conn.cursor()
+    cursor.execute("delete from reminders where id=" + str(note_id))
+    conn.commit()
+    conn.close()
+
+
+def getNotesById(note_id):
+    conn = sqlite3.connect(config.db_file)
+    cursor = conn.cursor()
+    cursor.execute("select text from reminders where id=" + str(note_id))
     result = cursor.fetchall()
     if not result:
         return "0"
