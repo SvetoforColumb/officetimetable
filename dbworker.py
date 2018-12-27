@@ -97,7 +97,7 @@ def getRemindDate(note_id):
     cursor.execute("select remind_date from reminders where id=" + str(note_id))
     result = cursor.fetchall()
     if not result:
-        return None
+        return '0'
     conn.commit()
     conn.close()
     return result[0]
@@ -110,7 +110,7 @@ def getReminds(date, time):
                    + time + "'")
     result = cursor.fetchall()
     if not result:
-        return "0"
+        return None
     conn.commit()
     conn.close()
     return result
