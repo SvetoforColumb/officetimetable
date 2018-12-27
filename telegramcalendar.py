@@ -1,19 +1,15 @@
 import datetime
-
 from telebot import types
 import calendar
 
 
 def create_calendar(year, month):
     now = datetime.datetime.now()
-
     markup = types.InlineKeyboardMarkup()
-    # First row - Month and Year
     row = []
     calendar_name = calendar.month_name[month]
     row.append(types.InlineKeyboardButton(calendar_name + " " + str(year), callback_data="ignore"))
     markup.row(*row)
-    # Second row - Week Days
     week_days = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
     row = []
     for day in week_days:

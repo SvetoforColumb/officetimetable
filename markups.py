@@ -25,7 +25,6 @@ def getYesNoMarkup():
 def getNoteMarkup(user_id, note_id=None):
     if note_id is None:
             note_id = dbworker.getLastNotesId(user_id)
-            print("1  " + str(note_id))
             prev_note_id = dbworker.getPrevNoteId(note_id)[0][0]
             if prev_note_id == '-':
                     note_markup = types.InlineKeyboardMarkup(row_width=2)
@@ -34,7 +33,6 @@ def getNoteMarkup(user_id, note_id=None):
                     note_markup.row(*note_markup_row)
                     return note_markup
     else:
-            print("2  " + str(note_id))
             prev_note_id = dbworker.getPrevNoteId(note_id)[0][0]
             if prev_note_id == '-':
                     note_markup = types.InlineKeyboardMarkup(row_width=2)

@@ -1,16 +1,13 @@
 import datetime
 import os
 import time
-
 from multiprocessing import Process
 
 import telebot
-
 from flask import Flask, request
 
 import config
 import markups
-
 import telegramcalendar
 import dbworker
 
@@ -116,7 +113,6 @@ def get_day(call):
                 now.day):
             bot.send_message(call.message.chat.id, "This is past", reply_markup=markups.getRemoveMarkup())
             return
-        print(normal_date)
         dbworker.setDate(call.message.chat.id, normal_date)
         bot.send_message(call.message.chat.id, "Enter time in format XX:XX", reply_markup=markups.getRemoveMarkup())
         dbworker.setState(call.message.chat.id, config.States.ENTERING_TIME.value)
@@ -144,8 +140,6 @@ def text(message):
 @bot.message_handler(func=lambda message: "View notes" in message.text)
 def view(message):
     last_note_id = dbworker.getLastNotesId(message.chat.id)
-    print("date '" + str(dbworker.getRemindDate(last_note_id)[0]) + "'")
-    print("time " + str(dbworker.getRemindTime(last_note_id)[0]) + "'")
     if last_note_id == '-':
         bot.send_message(message.chat.id, "You don't have notes")
     else:
@@ -153,21 +147,9 @@ def view(message):
         bot.send_message(message.chat.id, note, reply_markup=markups.getNoteMarkup(message.chat.id))
 
 
-# @bot.callback_query_handler(func=lambda call: call.data[0:10] == 'next_note-')
-# def nextNode(call):
-#     r_node_id = call.data[10:]
-#     print('next ' + str(r_node_id))
-#     note = dbworker.getNotesById(r_node_id)
-#     bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text=note)
-#     bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id,
-#                                   reply_markup=markups.getNoteMarkup(call.message.chat.id, r_node_id))
-
-
 @bot.callback_query_handler(func=lambda call: call.data[0:10] == 'prev_note-')
 def nextNode(call):
     r_node_id = call.data[10:]
-    print("date " + str(dbworker.getRemindDate(r_node_id)))
-    print("time " + str(dbworker.getRemindTime(r_node_id)))
     note = dbworker.getNotesById(r_node_id)
     bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text=note)
     bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id,
@@ -187,21 +169,16 @@ class Reminder:
             now = datetime.datetime.now()
             now_date = str(now)[0:10]
             now_time = str(now)[10:16]
-            print(now_date + "'")
-            print(now_time + "'")
             remind_list = dbworker.getReminds(now_date, now_time)
-            print(remind_list)
             if remind_list is not None:
                 for remind in remind_list:
                     bot.send_message(remind[0], remind[1])
             time.sleep(60)
 
 
-
-
-gettingMsg = Reminder()
-p2 = Process(target=gettingMsg)
-p2.start()
+Reminder = Reminder()
+p = Process(target=Reminder)
+p.start()
 
 
 @server.route('/' + config.token, methods=['POST'])
