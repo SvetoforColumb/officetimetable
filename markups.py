@@ -27,15 +27,12 @@ def getNoteMarkup(user_id, note_id=None):
             note_id = dbworker.getLastNotesId(user_id)
             print("1  " + str(note_id))
             prev_note_id = dbworker.getPrevNoteId(note_id)[0]
-            next_note_id = dbworker.getNextNoteId(note_id)[0]
     else:
             print("2  " + str(note_id))
             prev_note_id = dbworker.getPrevNoteId(note_id)[0]
-            next_note_id = dbworker.getNextNoteId(note_id)[0]
     note_markup = types.InlineKeyboardMarkup(row_width=2)
     note_markup_row = [
         types.InlineKeyboardButton('<', callback_data="prev_note-" + str(prev_note_id)),
-        types.InlineKeyboardButton('Delete', callback_data="delete_note-" + str(note_id)),
-        types.InlineKeyboardButton('>', callback_data="next_note-" + str(next_note_id))]
+        types.InlineKeyboardButton('Delete', callback_data="delete_note-" + str(note_id))]
     note_markup.row(*note_markup_row)
     return note_markup

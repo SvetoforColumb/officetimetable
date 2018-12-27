@@ -114,9 +114,9 @@ def getNotesById(note_id):
 def addNote(user_id, text):
     conn = sqlite3.connect(config.db_file)
     cursor = conn.cursor()
-    cursor.execute("insert into reminders (owner_id, text, remind_date, remind_time) values (" + str(user_id)
-                   + ", '" + text + "', '0', '0')")
-    cursor.execute("update USERS set state=0 where tid=" + str(user_id))
+    prev_id = getLastNotesId(user_id)
+    cursor.execute("insert into reminders (owner_id, text, remind_date, remind_time, prev_remind) values ("
+                   + str(user_id) + ", '" + text + "', '0', '0', " + prev_id + ")")
     conn.commit()
     conn.close()
     setLastNode(user_id)
