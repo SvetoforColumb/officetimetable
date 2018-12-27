@@ -144,6 +144,7 @@ def text(message):
 @bot.message_handler(func=lambda message: "View notes" in message.text)
 def view(message):
     last_note_id = dbworker.getLastNotesId(message.chat.id)
+    print(str(dbworker.getRemindDate(dbworker.getLastNoteId(89503357))))
     print("date " + str(dbworker.getRemindDate(last_note_id)))
     print("time " + str(dbworker.getRemindTime(last_note_id)))
     if last_note_id == '-':
@@ -191,7 +192,7 @@ class Reminder:
             print(now_time)
             remind_list = dbworker.getReminds(now_date, now_time)
             print(remind_list)
-            print(str(dbworker.getRemindDate(dbworker.getLastNoteId(89503357))))
+
             if remind_list is not None:
                 for remind in remind_list:
                     bot.send_message(remind[0], remind[1])
