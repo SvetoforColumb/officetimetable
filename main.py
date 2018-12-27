@@ -115,7 +115,8 @@ def get_day(call):
                 now.day):
             bot.send_message(call.message.chat.id, "This is past", reply_markup=markups.getRemoveMarkup())
             return
-        dbworker.setDate(call.message.chat.id, normal_date.strip())
+        print(date)
+        dbworker.setDate(call.message.chat.id, normal_date)
         bot.send_message(call.message.chat.id, "Enter time in format XX:XX", reply_markup=markups.getRemoveMarkup())
         dbworker.setState(call.message.chat.id, config.States.ENTERING_TIME.value)
 
