@@ -42,6 +42,19 @@ def setLastNode(user_id):
     conn.close()
 
 
+def getLastNoteId(user_id):
+    conn = sqlite3.connect(config.db_file)
+    cursor = conn.cursor()
+    cursor.execute("select last_note_id from users where tid=" + str(user_id))
+    result = cursor.fetchone()[0]
+    print("Last note " + result)
+    if not result:
+        return "0"
+    conn.commit()
+    conn.close()
+    return result
+
+
 def getLastNotesId(user_id):
     conn = sqlite3.connect(config.db_file)
     cursor = conn.cursor()
