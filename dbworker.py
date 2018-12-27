@@ -162,6 +162,7 @@ def setDate(user_id, value):
     conn = sqlite3.connect(config.db_file)
     cursor = conn.cursor()
     lni = getLastNoteId(user_id)
+    print(value)
     cursor.execute('update reminders set "remind_date"=' + str(value) + " where id=" + str(lni))
     conn.commit()
     conn.close()
