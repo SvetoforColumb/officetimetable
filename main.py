@@ -187,7 +187,7 @@ class Reminder:
             now = datetime.datetime.now()
             now_date = str(now)[0:10]
             now_time = str(now)[10:16]
-            # print(now_date)
+            print(now_date)
             # print(now_time)
             time.sleep(600)
 
