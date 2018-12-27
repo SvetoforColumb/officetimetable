@@ -109,7 +109,7 @@ def get_day(call):
         day = call.data[13:]
         date = datetime.datetime(int(saved_date[0]), int(saved_date[1]), int(day), 0, 0, 0)
         bot.answer_callback_query(call.id, text="")
-        normal_date = str(date)[0: -7]
+        normal_date = str(date)[0: -9]
         now = datetime.datetime.now()
         if int(normal_date[0] + normal_date[1] + normal_date[2] + normal_date[3]) <= int(now.year) and int(
                 normal_date[5] + normal_date[6]) <= int(now.month) and int(normal_date[8] + normal_date[9]) < int(
