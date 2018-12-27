@@ -1,7 +1,7 @@
 import datetime
 import os
 import time
-from asyncio import sleep
+
 from multiprocessing import Process
 
 import telebot
@@ -189,7 +189,8 @@ class Reminder:
             now_time = str(now)[10:15]
             print(now_date)
             print(now_time)
-            sleep(60)
+            time.sleep(60)
+
 
 
 gettingMsg = Reminder()
