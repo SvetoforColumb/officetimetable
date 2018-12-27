@@ -142,6 +142,7 @@ def text(message):
 @bot.message_handler(func=lambda message: "View notes" in message.text)
 def view(message):
     last_note_id = dbworker.getLastNotesId(message.chat.id)
+    print("last_note_id " + str(last_note_id))
     if last_note_id == '-':
         bot.send_message(message.chat.id, "You don't have notes")
     else:
