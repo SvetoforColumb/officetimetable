@@ -185,11 +185,11 @@ class Reminder:
     def __call__(self, *args, **kwargs):
         while True:
             now = datetime.datetime.now()
-            now_date = str(now)[0:9]
-            now_time = str(now)[10:15]
+            now_date = str(now)[0:10]
+            now_time = str(now)[10:16]
             print(now_date)
             print(now_time)
-            time.sleep(60)
+            time.sleep(600)
 
 
 
