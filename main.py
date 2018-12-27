@@ -1,6 +1,7 @@
 import datetime
 import os
 import time
+from asyncio import sleep
 from multiprocessing import Process
 
 import telebot
@@ -184,7 +185,11 @@ class Reminder:
     def __call__(self, *args, **kwargs):
         while True:
             now = datetime.datetime.now()
-            print(now)
+            now_date = str(now)[0:9]
+            now_time = str(now)[10:15]
+            print(now_date)
+            print(now_time)
+            sleep(60)
             # n_time = str(now.time())[0] + str(now.time())[1]
             # a_time = str(int(n_time) + 1)
             # r_day = str(now.month)
