@@ -23,12 +23,12 @@ def getYesNoMarkup():
 
 def getNoteMarkup(user_id, note_id=None):
         if note_id:
-                prev_note_id = dbworker.getPrevNoteId(note_id)
-                next_note_id = dbworker.getNextNoteId(note_id)
+                prev_note_id = dbworker.getPrevNoteId(note_id)[0]
+                next_note_id = dbworker.getNextNoteId(note_id)[0]
         else:
-                note_id = dbworker.getLastNotesId(user_id)
-                prev_note_id = dbworker.getPrevNoteId(note_id)
-                next_note_id = dbworker.getNextNoteId(note_id)
+                note_id = dbworker.getLastNotesId(user_id)[0]
+                prev_note_id = dbworker.getPrevNoteId(note_id)[0]
+                next_note_id = dbworker.getNextNoteId(note_id)[0]
         note_markup = types.InlineKeyboardMarkup(row_width=2)
         note_markup_row = [
                 types.InlineKeyboardButton('<', callback_data="prev_note-" + str(prev_note_id)),
