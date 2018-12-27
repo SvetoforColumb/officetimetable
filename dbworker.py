@@ -100,7 +100,7 @@ def getRemindDate(note_id):
         return "0"
     conn.commit()
     conn.close()
-    return result
+    return result[0]
 
 
 def getRemindTime(note_id):
@@ -112,7 +112,7 @@ def getRemindTime(note_id):
         return "0"
     conn.commit()
     conn.close()
-    return result
+    return result[0]
 
 
 def deleteNote(note_id):

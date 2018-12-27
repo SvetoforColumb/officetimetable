@@ -115,7 +115,7 @@ def get_day(call):
                 now.day):
             bot.send_message(call.message.chat.id, "This is past", reply_markup=markups.getRemoveMarkup())
             return
-        print(date)
+        print(normal_date)
         dbworker.setDate(call.message.chat.id, normal_date)
         bot.send_message(call.message.chat.id, "Enter time in format XX:XX", reply_markup=markups.getRemoveMarkup())
         dbworker.setState(call.message.chat.id, config.States.ENTERING_TIME.value)
@@ -184,7 +184,7 @@ class Reminder:
     def __call__(self, *args, **kwargs):
         while True:
             now = datetime.datetime.now()
-
+            print(now)
             # n_time = str(now.time())[0] + str(now.time())[1]
             # a_time = str(int(n_time) + 1)
             # r_day = str(now.month)
