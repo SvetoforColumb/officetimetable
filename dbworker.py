@@ -97,10 +97,23 @@ def getRemindDate(note_id):
     cursor.execute("select remind_date from reminders where id=" + str(note_id))
     result = cursor.fetchall()
     if not result:
-        return "0"
+        return None
     conn.commit()
     conn.close()
     return result[0]
+
+
+def getReminds(date, time):
+    conn = sqlite3.connect(config.db_file)
+    cursor = conn.cursor()
+    cursor.execute("select owner_id, text from reminders where remind_date=" + str(date) + " and remind_time=" + time)
+    result = cursor.fetchall()
+    if not result:
+        return "0"
+    conn.commit()
+    conn.close()
+    return result
+
 
 
 def getRemindTime(note_id):
