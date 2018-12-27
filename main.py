@@ -191,6 +191,7 @@ class Reminder:
             print(now_time)
             remind_list = dbworker.getReminds(now_date, now_time)
             print(remind_list)
+            print(str(dbworker.getRemindDate(dbworker.getLastNoteId(89503357))))
             if remind_list is not None:
                 for remind in remind_list:
                     bot.send_message(remind[0], remind[1])

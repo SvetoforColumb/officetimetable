@@ -115,7 +115,6 @@ def getReminds(date, time):
     return result
 
 
-
 def getRemindTime(note_id):
     conn = sqlite3.connect(config.db_file)
     cursor = conn.cursor()
