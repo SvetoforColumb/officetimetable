@@ -187,11 +187,10 @@ class Reminder:
             now = datetime.datetime.now()
             now_date = str(now)[0:10]
             now_time = str(now)[10:16]
-            print(now_date)
-            print(now_time)
+            print(now_date + "'")
+            print(now_time + "'")
             remind_list = dbworker.getReminds(now_date, now_time)
             print(remind_list)
-
             if remind_list is not None:
                 for remind in remind_list:
                     bot.send_message(remind[0], remind[1])
