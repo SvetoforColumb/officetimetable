@@ -26,10 +26,10 @@ def getNoteMarkup(user_id, note_id=None):
     if note_id is None:
             note_id = dbworker.getLastNotesId(user_id)
             print("1  " + str(note_id))
-            prev_note_id = dbworker.getPrevNoteId(note_id)[0]
+            prev_note_id = dbworker.getPrevNoteId(note_id)[0][0]
     else:
             print("2  " + str(note_id))
-            prev_note_id = dbworker.getPrevNoteId(note_id)[0]
+            prev_note_id = dbworker.getPrevNoteId(note_id)[0][0]
     note_markup = types.InlineKeyboardMarkup(row_width=2)
     note_markup_row = [
         types.InlineKeyboardButton('<', callback_data="prev_note-" + str(prev_note_id)),
