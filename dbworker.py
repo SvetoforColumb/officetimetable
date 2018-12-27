@@ -47,7 +47,7 @@ def getLastNoteId(user_id):
     cursor = conn.cursor()
     cursor.execute("select last_note_id from users where tid=" + str(user_id))
     result = cursor.fetchone()[0]
-    print("Last note " + result)
+    # print("Last note " + str(result))
     if not result:
         return "0"
     conn.commit()
