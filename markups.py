@@ -26,7 +26,7 @@ def getNoteMarkup(user_id, note_id=None):
                 prev_note_id = dbworker.getPrevNoteId(note_id)
                 next_note_id = dbworker.getNextNoteId(note_id)
         else:
-                note_id = dbworker.getLastNoteId(user_id)
+                note_id = dbworker.getLastNotesId(user_id)
                 prev_note_id = dbworker.getPrevNoteId(note_id)
                 next_note_id = dbworker.getNextNoteId(note_id)
         note_markup = types.InlineKeyboardMarkup(row_width=2)

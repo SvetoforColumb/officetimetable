@@ -61,7 +61,7 @@ def getLastNotesId(user_id):
     cursor.execute("select id from reminders where owner_id=" + str(user_id) + " order by id desc")
     result = cursor.fetchall()
     if not result:
-        return "0"
+        return "-"
     conn.commit()
     conn.close()
     return result[0]

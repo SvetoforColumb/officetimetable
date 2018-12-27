@@ -142,8 +142,11 @@ def text(message):
 @bot.message_handler(func=lambda message: "View notes" in message.text)
 def view(message):
     last_note_id = dbworker.getLastNotesId(message.chat.id)
-    note = dbworker.getNotesById(last_note_id)
-    bot.send_message(message.chat.id, note, reply_markup=markups.getNoteMarkup(message.chat.id))
+    if last_note_id == '-':
+        bot.send_message(message.chat.id, "You don't have notes")
+    else:
+        note = dbworker.getNotesById(last_note_id)
+        bot.send_message(message.chat.id, note, reply_markup=markups.getNoteMarkup(message.chat.id))
 
 
 @bot.callback_query_handler(func=lambda call: call.data[0:10] == 'next_note-')
