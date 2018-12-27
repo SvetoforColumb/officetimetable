@@ -45,7 +45,7 @@ def setLastNode(user_id):
 def getLastNoteId(user_id):
     conn = sqlite3.connect(config.db_file)
     cursor = conn.cursor()
-    cursor.execute("select last_note_id from users where tid=" + str(user_id))
+    cursor.execute("select id from reminders where owner_id=" + str(user_id) + " order by id desc ")
     result = cursor.fetchone()[0]
     # print("Last note " + str(result))
     if not result:
@@ -161,8 +161,7 @@ def addNote(user_id, text):
 def setDate(user_id, value):
     conn = sqlite3.connect(config.db_file)
     cursor = conn.cursor()
-    lni = getLastNoteId(user_id)
-    print(value)
+    lni = getLastNotesId(user_id)
     cursor.execute('update reminders set "remind_date"=' + str(value) + " where id=" + str(lni))
     conn.commit()
     conn.close()
