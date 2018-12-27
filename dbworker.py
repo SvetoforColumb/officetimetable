@@ -108,7 +108,8 @@ def getReminds(date, time):
     cursor = conn.cursor()
     print(date)
     print(time)
-    cursor.execute("select owner_id, text from reminders where remind_date='" + str(date) + "'")
+    cursor.execute("select owner_id, text from reminders where remind_date='" + str(date) + "' and remind_time='"
+                   + str(time) + "'")
     result = cursor.fetchall()
     if not result:
         return None
