@@ -2,11 +2,8 @@ import datetime
 import os
 import time
 from multiprocessing import Process
-from time import sleep
 
 import telebot
-
-import re
 
 from flask import Flask, request
 
@@ -24,7 +21,7 @@ server = Flask(__name__)
 @bot.message_handler(commands=['start'])
 def start(message):
     bot.send_message(message.chat.id, "Hi! it's your timekeep bot!\nUse this bot to manage your reminds ",
-                     reply_markup=markups.markup_main)
+                     reply_markup=markups.getMainMarkup())
     name = message.chat.first_name
     if message.chat.last_name != "None":
         name = name + " " + message.chat.last_name
@@ -36,7 +33,7 @@ def start(message):
 
 @bot.message_handler(func=lambda message: "Make a note" in message.text)
 def make(message):
-    bot.send_message(message.chat.id, "Enter a text of note", reply_markup=markups.markup_remove)
+    bot.send_message(message.chat.id, "Enter a text of note", reply_markup=markups.getRemoveMarkup())
     dbworker.setState(message.chat.id, config.States.ENTER_TEXT.value)
 
 
@@ -44,18 +41,13 @@ def make(message):
 def text(message):
     dbworker.addNote(message.chat.id, message.text)
     bot.send_message(message.chat.id, "Text added")
-    bot.send_message(message.chat.id, "Would you like to set up remind?", reply_markup=markups.yes_no_markup)
+    bot.send_message(message.chat.id, "Would you like to set up remind?", reply_markup=markups.getYesNoMarkup())
     dbworker.setState(message.chat.id, config.States.TEXT_ADDED.value)
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "add_remind_no")
 def callback(call):
-    now = datetime.datetime.now()
-    chat_id = call.message.chat.id
-    date = (now.year, now.month)
-    current_shown_dates[chat_id] = date
-    markup_calendar = telegramcalendar.create_calendar(now.year, now.month)
-    bot.send_message(call.message.chat.id, "Note added", reply_markup=markup_calendar)
+    bot.send_message(call.message.chat.id, "Note added", reply_markup=markups.getMainMarkup())
 
 
 @bot.callback_query_handler(func=lambda call: call.data == "add_remind_yes")
@@ -121,10 +113,10 @@ def get_day(call):
         if int(normal_date[0] + normal_date[1] + normal_date[2] + normal_date[3]) <= int(now.year) and int(
                 normal_date[5] + normal_date[6]) <= int(now.month) and int(normal_date[8] + normal_date[9]) < int(
                 now.day):
-            bot.send_message(call.message.chat.id, "This is past", reply_markup=markups.markup_remove)
+            bot.send_message(call.message.chat.id, "This is past", reply_markup=markups.getRemoveMarkup())
             return
         dbworker.setDate(call.message.chat.id, normal_date.strip())
-        bot.send_message(call.message.chat.id, "Enter time in format XX:XX", reply_markup=markups.markup_remove)
+        bot.send_message(call.message.chat.id, "Enter time in format XX:XX", reply_markup=markups.getRemoveMarkup())
         dbworker.setState(call.message.chat.id, config.States.ENTERING_TIME.value)
 
 
@@ -140,7 +132,7 @@ def isTimeFormat(a):
 def text(message):
     if isTimeFormat(message.text):
         dbworker.setTime(message.chat.id, message.text)
-        bot.send_message(message.chat.id, "Reminder added!", reply_markup=markups.markup_main)
+        bot.send_message(message.chat.id, "Reminder added!", reply_markup=markups.getMainMarkup())
         dbworker.setState(message.chat.id, config.States.START.value)
     else:
         bot.send_message(message.chat.id, "Incorrect date")
