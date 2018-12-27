@@ -59,7 +59,7 @@ def getLastNotesId(user_id):
     conn = sqlite3.connect(config.db_file)
     cursor = conn.cursor()
     cursor.execute("select id from reminders where owner_id=" + str(user_id) + " order by id desc")
-    result = cursor.fetchall()
+    result = cursor.fetchall()[0]
     if not result:
         return "-"
     conn.commit()
