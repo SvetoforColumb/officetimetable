@@ -141,7 +141,7 @@ def text(message):
 
 @bot.message_handler(func=lambda message: "View notes" in message.text)
 def view(message):
-    last_note_id = dbworker.getLastNoteId(message.chat.id)
+    last_note_id = dbworker.getLastNotesId(message.chat.id)
     note = dbworker.getNotesById(last_note_id)
     bot.send_message(message.chat.id, note, reply_markup=markups.getNoteMarkup(message.chat.id))
 
