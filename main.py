@@ -142,7 +142,8 @@ def text(message):
 @bot.message_handler(func=lambda message: "View notes" in message.text)
 def view(message):
     last_note_id = dbworker.getLastNotesId(message.chat.id)
-    print("last_note_id " + str(last_note_id))
+    print("date " + str(dbworker.getRemindDate(last_note_id)))
+    print("time " + str(dbworker.getRemindTime(last_note_id)))
     if last_note_id == '-':
         bot.send_message(message.chat.id, "You don't have notes")
     else:
@@ -163,7 +164,8 @@ def view(message):
 @bot.callback_query_handler(func=lambda call: call.data[0:10] == 'prev_note-')
 def nextNode(call):
     r_node_id = call.data[10:]
-    print('prev ' + str(r_node_id))
+    print("date " + str(dbworker.getRemindDate(r_node_id)))
+    print("time " + str(dbworker.getRemindTime(r_node_id)))
     note = dbworker.getNotesById(r_node_id)
     bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text=note)
     bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id,
@@ -181,6 +183,7 @@ class Reminder:
     def __call__(self, *args, **kwargs):
         while True:
             now = datetime.datetime.now()
+
             # n_time = str(now.time())[0] + str(now.time())[1]
             # a_time = str(int(n_time) + 1)
             # r_day = str(now.month)

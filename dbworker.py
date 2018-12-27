@@ -91,6 +91,30 @@ def getNextNoteId(note_id):
     return result
 
 
+def getRemindDate(note_id):
+    conn = sqlite3.connect(config.db_file)
+    cursor = conn.cursor()
+    cursor.execute("select remind_date from reminders where id=" + str(note_id))
+    result = cursor.fetchall()
+    if not result:
+        return "0"
+    conn.commit()
+    conn.close()
+    return result
+
+
+def getRemindTime(note_id):
+    conn = sqlite3.connect(config.db_file)
+    cursor = conn.cursor()
+    cursor.execute("select remind_time from reminders where id=" + str(note_id))
+    result = cursor.fetchall()
+    if not result:
+        return "0"
+    conn.commit()
+    conn.close()
+    return result
+
+
 def deleteNote(note_id):
     conn = sqlite3.connect(config.db_file)
     cursor = conn.cursor()
